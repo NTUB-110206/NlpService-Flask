@@ -13,4 +13,4 @@ def index():
 @app.route('/sentiment-bert', methods=['POST'])
 def sentimentBert():
     results = WEB_API.get_sentimentBertAPI(request.json["data"])
-    return jsonify({'result': results[0]}), 200, {"function": "root"}
+    return jsonify({'result': results[0]}), 200, {"function": "sentiment-bert"}
