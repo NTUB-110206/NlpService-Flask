@@ -28,7 +28,7 @@ def data_prepare(data):
     return data
 
 def corpus_prepare():
-    data = pd.read_csv('drive/MyDrive/二技資管一甲/下學期/news_dataset/senti_analy/Sentiment.csv')
+    data = pd.read_csv('/data/Sentiment.csv')
     data = data_prepare(data)
 
     for idx,row in data.iterrows():
@@ -40,14 +40,14 @@ def corpus_prepare():
 
 def predict(twt):
     model = Sequential()
-    model = load_model("/content/drive/MyDrive/Colab Notebooks/模型/Sentiment20211109.h5")
+    model = load_model("/data/sentiment.h5")
     twt = tokenizer.texts_to_sequences(twt)
     twt = pad_sequences(twt, maxlen = 29, dtype = 'int32', value = 0)
     sentiment = model.predict(twt,batch_size=1,verbose = 2)[0]
     return np.argmax(sentiment)
 
 def get_newslist(trend_id):
-    res = requests.get(backend_SERVERURL+'/newslist?category='+trend_id)
+    res = requests.get(backend_SERVERURL+'/newslist?trend='+trend_id)
     results = res.json()
     return results
 
