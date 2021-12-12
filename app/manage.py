@@ -14,3 +14,15 @@ def index():
 def sentimentBert():
     results = WEB_API.get_sentimentBertAPI(request.json["data"])
     return jsonify({'result': results[0]}), 200, {"function": "sentiment-bert"}
+
+# # prototype
+# @app.route('/sentiment_predict', methods=['POST'])
+# def sentimentPredict():
+#     results = WEB_API.get_sentimentPredictAPI(request.json["data"])
+#     return jsonify({'result': results[0]}), 200, {"function": "sentiment_predict"}
+
+# # prototype
+# @app.route('/category_predict', methods=['POST'])
+# def categoryPredict():
+#     results = WEB_API.get_categoryPredictAPI(request.json["data"])
+#     return jsonify({'result': results[0]}), 200, {"function": "category_predict"}
