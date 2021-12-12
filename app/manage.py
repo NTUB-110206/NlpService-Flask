@@ -1,4 +1,4 @@
-from app import app, WEB_API
+from app import app, WEB_API, classifyChatbot
 from flask import jsonify, request
 from flask_cors import CORS
 
@@ -14,6 +14,14 @@ def index():
 def sentimentBert():
     results = WEB_API.get_sentimentBertAPI(request.json["data"])
     return jsonify({'result': results[0]}), 200, {"function": "sentiment-bert"}
+
+@app.route('/classifyChatbot', methods=['GET', 'POST'])
+def Chatbot_classify():
+    if request.method == 'POST':
+        results = classifyChatbot.predict('今天的新聞')
+    elif request.method == 'PUT':
+        results = classifyChatbot.train()
+    return jsonify({'result': results}), 200, {"function": "classifyChatbot"}
 
 # # prototype
 # @app.route('/sentiment_predict', methods=['POST'])
