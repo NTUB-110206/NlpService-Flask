@@ -16,6 +16,7 @@ from sklearn.model_selection import train_test_split
 
 #資料清理及預處理套件
 import re
+import requests
 import string
 from nltk.corpus import stopwords, wordnet
 from nltk.tokenize import word_tokenize
@@ -25,7 +26,8 @@ from sklearn.preprocessing import LabelEncoder
 
 #Tensorflow套件
 from tensorflow import keras
-
+# !pip install -U keras-tuner
+# !pip install keras
 from kerastuner.tuners import RandomSearch
 from kerastuner.engine.hyperparameters import HyperParameters
 from keras.utils import np_utils
@@ -50,6 +52,12 @@ VAL_SET_RATIO = 0.00
 
 #文字預處理
 def preprocess_text(text):
+    #刪除標點符號
+    rm_punctuation = lambda x: x.translate(str.maketrans('', '', string.punctuation + "\'\n\r\t"))
+
+    #去除StopWord
+    stop_words = set(stopwords.words('english'))
+    rm_stopwords = lambda x: ' '.join([word for word in x.split() if word not in stop_words])
     text = text.lower()
     text = rm_punctuation(text)
     text = rm_stopwords(text)
@@ -86,7 +94,17 @@ def preprocessing_pipeline(document):
     
     return df
 
+def get_corpus():
+    data = get_newslist('NULL')
+    corpus_list = pd.DataFrame.from_dict(data['data']['news'])
+    corpus = corpus_list[["news_title", "category"]]
+    corpus.columns = ['text', 'category']
+    corpus['category'] = ''
+    return corpus
+
 def corpus_prepare():
+    corpus = get_corpus()
+
     #類別出現機率計算
     p = corpus.category.value_counts() / corpus.category.shape[0]
 
@@ -112,12 +130,6 @@ def corpus_prepare():
 
     nltk.download('stopwords')
 
-    #刪除標點符號
-    rm_punctuation = lambda x: x.translate(str.maketrans('', '', string.punctuation + "\'\n\r\t"))
-
-    #去除StopWord
-    stop_words = set(stopwords.words('english'))
-    rm_stopwords = lambda x: ' '.join([word for word in x.split() if word not in stop_words])
 
     #類別編碼
     category_encoder = LabelEncoder()
@@ -136,6 +148,10 @@ def corpus_prepare():
 
     #vector representation for lemmata
     keras_tokenizer = Tokenizer()
+
+    X_train = pd.DataFrame()
+    X_train['lemma'] = corpus.lemma
+    X_train = X_train.to_numpy().reshape(-1,)
     keras_tokenizer.fit_on_texts(X_train)
     X_train_sequences = keras_tokenizer.texts_to_sequences(X_train)
 
@@ -173,3 +189,33 @@ def corpus_prepare():
         if embedding_vec is not None:
             embedding_matrix[i] = embedding_vec
 
+    model = keras.models.Sequential()
+    model = load_model("/content/drive/MyDrive/Colab Notebooks/模型/category.h5")
+    model.compile(loss = "binary_crossentropy", optimizer = "adam", metrics = ["accuracy"])
+
+    return np.argmax(model.predict(X_train_padded), axis=1)
+
+def get_newslist(trend_id):
+    res = requests.get(backend_SERVERURL+'/newslist?category='+trend_id)
+    results = res.json()
+    return results
+
+def category_predict():
+    data = get_newslist('NULL')
+
+    predictions = corpus_prepare()
+
+    for i in range(0, len(data['data']['news'])):
+      data['data']['news'][i]['category_id'] = str(int(predictions[i]))
+
+    return data['data']['news']
+
+def post_newslist(newslist):
+    headers = {'Content-Type': 'application/json'}
+    payload = json.dumps({'news': newslist})
+    res = requests.put(backend_SERVERURL+'/newslist', headers=headers, data=payload)
+    results = res.json()
+    return results
+
+post_result = post_newslist(category_predict())
+print(post_result)
