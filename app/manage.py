@@ -18,7 +18,7 @@ def sentimentBert():
 @app.route('/classifyChatbot', methods=['GET', 'POST'])
 def Chatbot_classify():
     if request.method == 'POST':
-        results = classifyChatbot.predict('今天的新聞')
+        results = classifyChatbot.predict(request.json["msg"])
     elif request.method == 'PUT':
         results = classifyChatbot.train()
     return jsonify({'result': results}), 200, {"function": "classifyChatbot"}
