@@ -1,27 +1,19 @@
 #讀取資料套件faw
 import os
-import shutil
 from tqdm import tqdm
 import numpy as np
 import pandas as pd
-from urllib.parse import urlparse
 from collections import defaultdict
 import nltk
 import json
 
-#資料分割套件
-from imblearn.under_sampling import RandomUnderSampler
-from imblearn.over_sampling import RandomOverSampler
-from imblearn.pipeline import Pipeline
-from sklearn.model_selection import train_test_split
 
 #資料清理及預處理套件
-import re
 import requests
 import string
 from nltk.corpus import stopwords, wordnet
 from nltk.tokenize import word_tokenize
-from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk.stem import WordNetLemmatizer
 from nltk import pos_tag
 from sklearn.preprocessing import LabelEncoder
 
@@ -29,15 +21,11 @@ from sklearn.preprocessing import LabelEncoder
 from tensorflow import keras
 # !pip install -U keras-tuner
 # !pip install keras
-from kerastuner.tuners import RandomSearch
-from kerastuner.engine.hyperparameters import HyperParameters
-from keras.utils import np_utils
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow import keras
 
 #繪圖套件
-import matplotlib.pyplot as plt
 
 #評估模型套件
 from sklearn.metrics import accuracy_score
@@ -174,8 +162,7 @@ def corpus_prepare():
     # choose dimension
     # 50 turned out to provide a better learning curve
     dimension = 50
-
-    with open(os.path.join('drive/MyDrive/二技資管一甲/下學期/news_dataset/glove.6B.50d.txt'.format(dimension)), encoding = "utf-8") as f:
+    with open(os.path.join('data/glove.6B.50d.txt'.format(dimension)), encoding = "utf-8") as f:
     # is just a space-separated text file in the format:
     # word vec[0] vec[1] vec[2] ...
         for line in f:
@@ -193,7 +180,7 @@ def corpus_prepare():
             embedding_matrix[i] = embedding_vec
 
     model = keras.models.Sequential()
-    model = load_model("/content/drive/MyDrive/Colab Notebooks/模型/category.h5")
+    model = load_model('data/category.h5')
     model.compile(loss = "binary_crossentropy", optimizer = "adam", metrics = ["accuracy"])
 
     return np.argmax(model.predict(X_train_padded), axis=1)
@@ -218,4 +205,5 @@ def post_newslist(newslist):
     payload = json.dumps({'news': newslist})
     res = requests.put(backend_SERVERURL+'/newslist', headers=headers, data=payload)
     results = res.json()
+    print(results)
     return results
