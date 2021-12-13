@@ -28,8 +28,8 @@ def sentimentPredict():
     results = sentiment_predict.post_newslist(sentiment_predict.sentiment_predict())
     return jsonify({'result': results[0]}), 200, {"function": "sentiment_predict"}
 
-# prototype
-@app.route('/category_predict', methods=['GET'])
-def categoryPredict():
-    results = category_predict.post_newslist(category_predict.category_predict())
-    return jsonify({'result': results[0]}), 200, {"function": "category_predict"}
+# # prototype
+# @app.route('/category_predict', methods=['GET'])
+# def categoryPredict():
+#     results = category_predict.post_newslist(category_predict.category_predict())
+#     return jsonify({'result': results[0]}), 200, {"function": "category_predict"}
