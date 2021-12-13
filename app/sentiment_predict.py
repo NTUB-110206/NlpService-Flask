@@ -68,6 +68,3 @@ def post_newslist(newslist):
     res = requests.put(backend_SERVERURL+'/newslist', headers=headers, data=payload)
     results = res.json()
     return results
-
-post_result = post_newslist(sentiment_predict())
-print(post_result)
