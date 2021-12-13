@@ -7,6 +7,7 @@ import pandas as pd
 from urllib.parse import urlparse
 from collections import defaultdict
 import nltk
+import json
 
 #資料分割套件
 from imblearn.under_sampling import RandomUnderSampler
@@ -49,6 +50,8 @@ RANDOM_STATE = 123
 TRAIN_SET_RATIO = 1.00
 TEST_SET_RATIO = 0.00
 VAL_SET_RATIO = 0.00
+
+backend_SERVERURL = 'https://ntub110206-backend.herokuapp.com'
 
 #文字預處理
 def preprocess_text(text):
