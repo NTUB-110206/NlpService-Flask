@@ -23,6 +23,7 @@ def Chatbot_classify():
         results = classifyChatbot.train()
     return jsonify({'result': results}), 200, {"function": "classifyChatbot"}
 
+# Service For News Sentiment Predict
 @app.route('/sentiment_predict', methods=['GET'])
 def sentimentPredict():
     results = sentiment_predict.post_newslist(sentiment_predict.sentiment_predict())
