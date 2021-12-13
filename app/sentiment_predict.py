@@ -41,7 +41,7 @@ def corpus_prepare():
 def predict(twt):
     model = Sequential()
     model = load_model("/data/sentiment.h5")
-    twt = tokenizer.texts_to_sequences(twt)
+    twt = Tokenizer.texts_to_sequences(twt)
     twt = pad_sequences(twt, maxlen = 29, dtype = 'int32', value = 0)
     sentiment = model.predict(twt,batch_size=1,verbose = 2)[0]
     return np.argmax(sentiment)
