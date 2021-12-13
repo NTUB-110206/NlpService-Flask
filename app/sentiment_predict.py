@@ -1,7 +1,6 @@
 import requests, json
 import numpy as np
 import pandas as pd
-from sklearn.feature_extraction.text import CountVectorizer
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
 from keras.models import Sequential
@@ -28,7 +27,7 @@ def data_prepare(data):
     return data
 
 def corpus_prepare():
-    data = pd.read_csv('/data/Sentiment.csv')
+    data = pd.read_csv('data/Sentiment.csv')
     data = data_prepare(data)
 
     for idx,row in data.iterrows():
@@ -37,11 +36,12 @@ def corpus_prepare():
     max_fatures = 2000
     tokenizer = Tokenizer(num_words=max_fatures, split=' ')
     tokenizer.fit_on_texts(data['text'].values)
+    return tokenizer
 
-def predict(twt):
+def predict(twt, tokenizer):
     model = Sequential()
-    model = load_model("/data/sentiment.h5")
-    twt = Tokenizer.texts_to_sequences(twt)
+    model = load_model("data/sentiment.h5")
+    twt = tokenizer.texts_to_sequences(twt)
     twt = pad_sequences(twt, maxlen = 29, dtype = 'int32', value = 0)
     sentiment = model.predict(twt,batch_size=1,verbose = 2)[0]
     return np.argmax(sentiment)
@@ -54,11 +54,11 @@ def get_newslist(trend_id):
 def sentiment_predict():
     data = get_newslist('NULL')
 
-    corpus_prepare()
+    tokenizer = corpus_prepare()
 
     for i in range(0, len(data['data']['news'])):
-      data['data']['news'][i]['trend_id'] = str(predict(data['data']['news'][i]['news_title']))
-      print(str(predict(data['data']['news'][i]['news_title'])))
+      data['data']['news'][i]['trend_id'] = str(predict(data['data']['news'][i]['news_title'], tokenizer))
+      print(data['data']['news'][i]['trend_id'])
 
     return data['data']['news']
 
