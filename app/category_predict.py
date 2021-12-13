@@ -162,14 +162,20 @@ def corpus_prepare():
     # choose dimension
     # 50 turned out to provide a better learning curve
     dimension = 50
-    with open(os.path.join('data/glove.6B.50d.txt'.format(dimension)), encoding = "utf-8") as f:
+    with open(os.path.join('data/glove.6B.50d.1.txt'.format(dimension)), encoding = "utf-8") as f1,  open(os.path.join('data/glove.6B.50d.2.txt'.format(dimension)), encoding = "utf-8") as f2:
     # is just a space-separated text file in the format:
     # word vec[0] vec[1] vec[2] ...
-        for line in f:
+        print(f1)
+        cnt=0
+        ## fix here
+        for line in f1:
+            cnt+=1
             values = line.split() #split at space
             word = values[0]
             vec = np.asarray(values[1:], dtype = 'float32') #numpy.asarray()function is used when we want to convert input to an array.
             word2vec[word] = vec
+        print(cnt)
+        f=f1+f2
 
     #創造embedding矩陣
     embedding_matrix = np.zeros((len(word2index)+1, dimension))
