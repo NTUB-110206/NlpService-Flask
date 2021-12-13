@@ -1,4 +1,4 @@
-from app import app, WEB_API, classifyChatbot
+from app import app, WEB_API, classifyChatbot, sentiment_predict, category_predict
 from flask import jsonify, request
 from flask_cors import CORS
 
@@ -23,14 +23,13 @@ def Chatbot_classify():
         results = classifyChatbot.train()
     return jsonify({'result': results}), 200, {"function": "classifyChatbot"}
 
-# # prototype
-# @app.route('/sentiment_predict', methods=['POST'])
-# def sentimentPredict():
-#     results = WEB_API.get_sentimentPredictAPI(request.json["data"])
-#     return jsonify({'result': results[0]}), 200, {"function": "sentiment_predict"}
+@app.route('/sentiment_predict', methods=['GET'])
+def sentimentPredict():
+    results = sentiment_predict.post_newslist(sentiment_predict.sentiment_predict())
+    return jsonify({'result': results[0]}), 200, {"function": "sentiment_predict"}
 
-# # prototype
-# @app.route('/category_predict', methods=['POST'])
-# def categoryPredict():
-#     results = WEB_API.get_categoryPredictAPI(request.json["data"])
-#     return jsonify({'result': results[0]}), 200, {"function": "category_predict"}
+# prototype
+@app.route('/category_predict', methods=['GET'])
+def categoryPredict():
+    results = category_predict.post_newslist(category_predict.category_predict())
+    return jsonify({'result': results[0]}), 200, {"function": "category_predict"}
