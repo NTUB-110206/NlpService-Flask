@@ -5,6 +5,7 @@ from datetime import datetime
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 
+look_back = 59
 pd.set_option('expand_frame_repr', False)
 
 cryptocurrency = 'BTC'
