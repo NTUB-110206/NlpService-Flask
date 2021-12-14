@@ -33,7 +33,7 @@ def closePricePredict():
 @app.route('/ClosedPricePic_Predict', methods=['GET'])
 def closePricePicturePredict():
     results = WEB_API.imgur_upload(price_predict.gen_predict_pic())
-    return jsonify({'result': results['result']['link']}), 200, {"function": "ClosedPricePic_Predict"}
+    return jsonify({'result': results['link']}), 200, {"function": "ClosedPricePic_Predict"}
 
 # Service For Closed Price Trend Predict
 @app.route('/ClosedPriceInOrDecrease_Predict', methods=['GET'])
