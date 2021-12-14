@@ -27,7 +27,7 @@ def Chatbot_classify():
 @app.route('/ClosedPrice_Predict', methods=['GET'])
 def closePricePredict():
     results = price_predict.predict_data()
-    return jsonify({'result': results}), 200, {"function": "ClosedPrice_Predict"}
+    return jsonify({'result': float(results[6])}), 200, {"function": "ClosedPrice_Predict"}
 
 # Service For Closed Price Picture Predict
 @app.route('/ClosedPricePic_Predict', methods=['GET'])
