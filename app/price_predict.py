@@ -97,7 +97,7 @@ def predict_data():
 
   # 將預測值轉換回股價
   X_test_pred_price = sc.inverse_transform(X_test_pred)
-  return X_test_pred_price
+  return float(X_test_pred_price[29])
 
 def gen_predict_pic():
   x1 = predict_data()
