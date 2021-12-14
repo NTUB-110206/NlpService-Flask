@@ -8,7 +8,7 @@ import keras
 from datetime import date, timedelta, datetime
 
 # 回看天數
-look_back = 14
+look_back = 6
 # 取得閉盤價api
 current_price_api = 'https://min-api.cryptocompare.com/data/price'
 # 取得歷史交易數據api
@@ -78,7 +78,7 @@ def predict_data():
   model = keras.models.Sequential()
   model = load_model("data/predict_price.h5")
 
-  data_threeday = get_hist_data(cryptocurrency, target_currency, 'day', 14)
+  data_threeday = get_hist_data(cryptocurrency, target_currency, 'day', 6)
 
   df_inputday = data_to_dataframe(data_threeday)
 
@@ -102,9 +102,9 @@ def predict_data():
 def gen_predict_pic():
   x = predict_data()
   x1 = x
-  x1[14] = np.NaN
+  x1[6] = np.NaN
   x2 = x
-  x2[0:13] = np.NaN
+  x2[0:5] = np.NaN
   plt.plot(x1, color="blue", label="Current")
   plt.plot(x2, color="red", label="Future")
   plt.title("BTC Price Prediction")
@@ -118,7 +118,7 @@ def gen_predict_pic():
 
 def InOrDecrease():
   price_list = predict_data()
-  if(price_list[13] < price_list[14]):
+  if(price_list[5] < price_list[6]):
     return '上漲'
   else:
     return '下跌'
