@@ -1,4 +1,4 @@
-from app import app, WEB_API, classifyChatbot, sentiment_predict, category_predict
+from app import app, WEB_API, classifyChatbot, price_predict
 from flask import jsonify, request
 from flask_cors import CORS
 
