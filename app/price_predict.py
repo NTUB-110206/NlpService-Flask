@@ -76,7 +76,7 @@ def create_dataset(ds, look_back=1):
 # 預測價格
 def predict_data():
   model = keras.models.Sequential()
-  model = load_model("predict_price.h5")
+  model = load_model("data/predict_price.h5")
 
   data_threeday = get_hist_data(cryptocurrency, target_currency, 'day', 29)
 
