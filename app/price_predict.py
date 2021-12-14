@@ -8,7 +8,7 @@ import keras
 from datetime import date, timedelta, datetime
 
 # 回看天數
-look_back = 14
+look_back = 13
 # 取得閉盤價api
 current_price_api = 'https://min-api.cryptocompare.com/data/price'
 # 取得歷史交易數據api
@@ -101,7 +101,7 @@ def predict_data():
 
 def gen_predict_pic():
   x1 = predict_data()
-  x1[look_back - 1] = np.NaN
+  x1[(look_back - 1)] = np.NaN
   x2 = predict_data()
   x2[0:(look_back - 2)] = np.NaN
   plt.plot(x1, color="blue", label="Current")
