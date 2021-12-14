@@ -33,7 +33,7 @@ def closePricePredict():
 @app.route('/ClosedPricePic_Predict', methods=['GET'])
 def closePricePicturePredict():
     results = price_predict.gen_predict_pic()
-    return jsonify({'result': results[0]}), 200, {"function": "ClosedPricePic_Predict"}
+    return jsonify({'result': results}), 200, {"function": "ClosedPricePic_Predict"}
 
 # Service For Closed Price Trend Predict
 @app.route('/ClosedPriceInOrDecrease_Predict', methods=['GET'])
