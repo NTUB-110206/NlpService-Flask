@@ -1,6 +1,7 @@
 import os
 import requests
 import json
+from imgurpython import ImgurClient
 
 backend_SERVERURL = os.getenv('Heroku_backend')
 api_inference = os.getenv('APIINFERENCE_BearerToken')
@@ -23,3 +24,8 @@ def get_sentimentBertAPI(predict_data):
     res = requests.request("POST", "https://api-inference.huggingface.co/models/nlptown/bert-base-multilingual-uncased-sentiment", headers=headers, data=payload)
     results = res.json()
     return results
+
+def imgur_upload(img_path):
+    client_data = ImgurClient(os.getenv('client_id'), os.getenv('client_secret'), os.getenv('access_token'), os.getenv('refresh_token'))
+    image_url = client_data.upload_from_path(img_path, config=None, anon=False)
+    return image_url
