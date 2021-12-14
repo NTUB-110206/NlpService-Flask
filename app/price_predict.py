@@ -78,7 +78,7 @@ def predict_data():
   model = keras.models.Sequential()
   model = load_model("data/predict_price.h5")
 
-  data_threeday = get_hist_data(cryptocurrency, target_currency, 'day', look_back)
+  data_threeday = get_hist_data(cryptocurrency, target_currency, 'day', 13)
 
   df_inputday = data_to_dataframe(data_threeday)
 
@@ -102,9 +102,9 @@ def predict_data():
 def gen_predict_pic():
   x = predict_data()
   x1 = x
-  x1[look_back] = np.NaN
+  x1[13] = np.NaN
   x2 = x
-  x2[0:(look_back - 1)] = np.NaN
+  x2[0:12] = np.NaN
   plt.plot(x1, color="blue", label="Current")
   plt.plot(x2, color="red", label="Future")
   plt.title("BTC Price Prediction")
@@ -118,7 +118,7 @@ def gen_predict_pic():
 
 def InOrDecrease():
   price_list = predict_data()
-  if(price_list[look_back - 1] < price_list[look_back]):
+  if(price_list[12] < price_list[13]):
     return '上漲'
   else:
     return '下跌'
