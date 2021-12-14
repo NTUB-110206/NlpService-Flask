@@ -5,6 +5,7 @@ import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from keras.models import load_model
 import keras
+from datetime import date, timedelta, datetime
 
 # 回看天數
 look_back = 29
@@ -109,7 +110,10 @@ def gen_predict_pic():
   plt.xlabel("Times")
   plt.ylabel("API Time Price")
   plt.legend()
-  plt.show()
+  fig = plt.gcf()
+  img_path = './data/'+datetime.strftime(datetime.now(), '%Y%m%d%H%M%S')+'-trend.jpg'
+  fig.savefig(img_path, dpi=200)
+  return img_path
 
 def InOrDecrease():
   price_list = predict_data()
