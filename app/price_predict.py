@@ -100,10 +100,11 @@ def predict_data():
   return X_test_pred_price
 
 def gen_predict_pic():
-  x1 = predict_data()
-  x1[(look_back - 1)] = np.NaN
-  x2 = predict_data()
-  x2[0:(look_back - 2)] = np.NaN
+  x = predict_data()
+  x1 = x
+  x1[look_back] = np.NaN
+  x2 = x
+  x2[0:(look_back - 1)] = np.NaN
   plt.plot(x1, color="blue", label="Current")
   plt.plot(x2, color="red", label="Future")
   plt.title("BTC Price Prediction")
@@ -117,7 +118,7 @@ def gen_predict_pic():
 
 def InOrDecrease():
   price_list = predict_data()
-  if(price_list[look_back - 2] < price_list[look_back - 1]):
+  if(price_list[look_back - 1] < price_list[look_back]):
     return '上漲'
   else:
     return '下跌'
