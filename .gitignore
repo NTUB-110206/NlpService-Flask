@@ -130,3 +130,4 @@ dmypy.json
 .DS_Store
 NlpService-env
 data/glove.6B.50d.txt
+*.jpg
