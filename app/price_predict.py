@@ -109,7 +109,10 @@ def gen_predict_pic():
   plt.title("BTC Price Prediction")
   plt.xlabel("Times")
   plt.ylabel("API Time Price")
-  plt.legend()
+  handles, labels = plt.gca().get_legend_handles_labels()
+  by_label = dict(zip(labels, handles))
+  plt.legend(by_label.values(), by_label.keys())
+  # plt.legend()
   fig = plt.gcf()
   img_path = './data/'+datetime.strftime(datetime.now(), '%Y%m%d%H%M%S')+'-trend.jpg'
   fig.savefig(img_path, dpi=200)
@@ -118,6 +121,6 @@ def gen_predict_pic():
 def InOrDecrease():
   price_list = predict_data()
   if(price_list[(look_back - 1)] < price_list[look_back]):
-    return '上漲'
+    return 'increase'
   else:
-    return '下跌'
+    return 'decrease'
