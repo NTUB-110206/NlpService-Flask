@@ -35,6 +35,11 @@ def get_current_data(from_sym='BTC', to_sym='USD', exchange=''):
 
   return data
 
+def dateRange(start, end, step=1, format="%Y-%m-%d"):
+    strptime, strftime = datetime.strptime, datetime.strftime
+    days = (strptime(end, format) - strptime(start, format)).days
+    return [strftime(strptime(start, format) + timedelta(i), format) for i in range(0, days, step)]
+
 # 取得歷史交易數據
 def get_hist_data(from_sym='BTC', to_sym='USD', timeframe='day', limit=2000, aggregation=1, exchange=''):
   url = hist_data_api
@@ -100,21 +105,26 @@ def predict_data():
   return X_test_pred_price
 
 def gen_predict_pic():
+  today = date.today()
+  date_list = dateRange(str(today - timedelta(days=11)), str(today + timedelta(days=3)))
+
   x1 = predict_data()
   x2 = predict_data()
   x1[look_back] = np.NaN
   x2[0:(look_back - 1)] = np.NaN
+  plt.xticks(np.arange(1, 15, 1), date_list)
+  plt.xticks(rotation=30)
   plt.plot(x1, color="blue", label="Current")
   plt.plot(x2, color="red", label="Future")
   plt.title("BTC Price Prediction")
-  plt.xlabel("Times")
-  plt.ylabel("API Time Price")
+  plt.xlabel("Date")
+  plt.ylabel("Predict Price")
   handles, labels = plt.gca().get_legend_handles_labels()
   by_label = dict(zip(labels, handles))
   plt.legend(by_label.values(), by_label.keys())
   # plt.legend()
   fig = plt.gcf()
-  img_path = './data/'+datetime.strftime(datetime.now(), '%Y%m%d%H%M%S')+'-trend.jpg'
+  img_path = './data/pic/'+datetime.strftime(datetime.now(), '%Y%m%d%H%M%S')+'-trend.jpg'
   fig.savefig(img_path, dpi=200)
   return img_path
 
