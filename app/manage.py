@@ -15,13 +15,13 @@ def sentimentBert():
     results = WEB_API.get_sentimentBertAPI(request.json["data"])
     return jsonify({'result': results[0]}), 200, {"function": "sentiment-bert"}
 
-@app.route('/classifyChatbot', methods=['GET', 'POST'])
+@app.route('/classifyChatbot', methods=['POST', 'PUT'])
 def Chatbot_classify():
     if request.method == 'POST':
-        results = classifyChatbot.predict(request.json["msg"])
+        results, prob = classifyChatbot.predict(request.json["msg"])
     elif request.method == 'PUT':
         results = classifyChatbot.train()
-    return jsonify({'result': results}), 200, {"function": "classifyChatbot"}
+    return jsonify({'result': results, 'prob': prob}), 200, {"function": "classifyChatbot"}
 
 # Service For News Sentiment Predict
 @app.route('/sentiment_predict', methods=['GET'])

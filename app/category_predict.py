@@ -175,7 +175,7 @@ def corpus_prepare():
     # 50 turned out to provide a better learning curve
     dimension = 50
 
-    with open(os.path.join('drive/MyDrive/二技資管一甲/下學期/news_dataset/glove.6B.50d.txt'.format(dimension)), encoding = "utf-8") as f:
+    with open(os.path.join('data/glove.6B.50d.txt'.format(dimension)), encoding = "utf-8") as f:
     # is just a space-separated text file in the format:
     # word vec[0] vec[1] vec[2] ...
         for line in f:
@@ -193,7 +193,7 @@ def corpus_prepare():
             embedding_matrix[i] = embedding_vec
 
     model = keras.models.Sequential()
-    model = load_model("/content/drive/MyDrive/Colab Notebooks/模型/category.h5")
+    model = load_model("data/category.h5")
     model.compile(loss = "binary_crossentropy", optimizer = "adam", metrics = ["accuracy"])
 
     return np.argmax(model.predict(X_train_padded), axis=1)

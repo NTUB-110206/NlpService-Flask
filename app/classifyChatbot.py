@@ -17,7 +17,7 @@ def train():
     lr.fit(X, intents)
     # 儲存模型
     joblib.dump(lr, 'LR_model')
-    return "train success"
+    return "train success", "train success"
 
 def predict(context):
     # # 使用Python pandas套件讀取檔案
@@ -44,5 +44,5 @@ def predict(context):
     if prob < 0.3:
         result = "unknown"
 
-    return result
+    return result, prob
 
