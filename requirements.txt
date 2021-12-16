@@ -22,6 +22,7 @@ h5py==3.6.0
 idna==3.3
 imbalanced-learn==0.8.1
 imblearn==0.0
+imgurpython==1.1.7
 importlib-metadata==4.8.2
 ipython==7.30.1
 itsdangerous==2.0.1
